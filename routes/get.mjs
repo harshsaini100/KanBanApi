@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.get("/all_items", async (req, res) => {
     try{
-        console.log("here");
         let collection = await db.collection("Items");
         let results = await collection.find({})
           .toArray();
