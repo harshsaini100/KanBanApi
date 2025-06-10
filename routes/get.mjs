@@ -35,4 +35,16 @@ router.patch("/updateStatus/:id", async (req, res) => {
     }
 })
 
+router.post("/add", async (req, res) => {
+    try{
+        let body = req.body;
+        let collection = await db.collection("Items")
+        let result = await collection.insertOne(body)
+        res.send("Done").status(200)
+    }catch(er){
+        console.log(er)
+        throw new Error(er)
+    }
+})
+
 export default router;
