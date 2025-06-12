@@ -34,6 +34,18 @@ router.patch("/updateStatus/:id", async (req, res) => {
     }
 })
 
+router.delete("/delete/:id", async (req, res) => {
+    try{
+        let collection = await db.collection("Items")
+        const query = {_id : ObjectId(req.params.id)}
+        let result = await collection.deleteOne(query)
+        res.send("Done").status(200)
+    }catch(er){
+        console.log(er)
+        throw new Error(er)
+    }
+})
+
 router.post("/add", async (req, res) => {
     try{
         let body = req.body;
