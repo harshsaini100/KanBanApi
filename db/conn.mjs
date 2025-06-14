@@ -7,5 +7,5 @@ try {
 } catch(e) {
   console.error(e);
 }
-let db = conn.db("KanbanOne");
+let db = conn.db();
 export default db;
