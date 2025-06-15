@@ -1,5 +1,8 @@
 import express from 'express';
 import User from '../models/User.mjs';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 
 const router = express.Router();
 
@@ -19,6 +22,21 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: errors.join(', ') });
         }
         res.status(500).json({ error: err.message });
+    }
+})
+
+router.post('/login', async (req, res) =>{
+    const {email, password} = req.body
+    try{
+        const user = await User.findOne({email});
+        if(!user) return res.status(400).send({error:"Invalid Credentials!"})
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch) return res.status(400).send({error:"Invalid Credentials!"})
+        
+        const token = await jwt.sign({id:user._id}, process.env.JWT_SECRET)
+        res.status(200).send({ token, user: { id: user._id, name: user.name, email: user.email } });
+    }catch(er){
+      res.status(500).send({ error: err.message });
     }
 })
 

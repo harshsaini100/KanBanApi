@@ -1,11 +1,12 @@
 import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
+import authMiddleware from "../middleware/authMiddleware.mjs";
 
 const router = express.Router();
 
 
-router.get("/all_items", async (req, res) => {
+router.get("/all_items", authMiddleware, async (req, res) => {
     try{
         let collection = await db.collection("Items");
         let results = await collection.find({})
