@@ -23,7 +23,16 @@ app.use("/projects", projectRoutes);
 
 // Global error handling
 app.use((err, _req, res, next) => {
-  res.status(500).send({error: "Uh oh! An unexpected error occured.",data: err})
+  console.log(err)
+  if(err?.name == "ValidationError"){
+    const errors = Object.keys(err.errors).map(val => {
+      return {
+        [val]: err.errors[val].message
+      }
+    })
+    return res.status(400).send({error: errors || "Invalid request"})
+  } 
+  res.status(500).send({error: "Uh oh! An unexpected error occuredd.",data: err})
 })
 
 // start the Express server
