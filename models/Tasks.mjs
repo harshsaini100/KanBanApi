@@ -12,6 +12,10 @@ const tasksSchema = mongoose.Schema({
         enum: ['todo', 'inprogress', 'completed'],
         required: [true, "Task type is required"],
     },
+    board_id: {
+        required: [true, "Board id is required"],
+        type: mongoose.Schema.Types.ObjectId
+    },
     description: {
         type: String,
     },

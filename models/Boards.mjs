@@ -1,27 +1,35 @@
 import mongoose from "mongoose";
 
-const projectsSchema = mongoose.Schema({
+const boardsSchema = mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Project name is required"],
+        required: [true, "Board name is required"],
         trim: true
     },
     description: {
         type: String,
         trim:true
     },
-    boards: {
+    project: {
+        required: [true, "Project is required"],
+        type: mongoose.Schema.Types.ObjectId
+    },
+    tasks: {
         type: Array
     },
-    totalBoards: {
+    totalTasks: {
         type:Number,
         default: 0
     },
-    activeBoards: {
+    todoTasks: {
         type: Number,
         default: 0
     },
-    completedBoards: {
+    inProgressTasks: {
+        type: Number,
+        default: 0
+    },
+    completedTasks: {
         type: Number,
         default: 0
     },
@@ -35,6 +43,6 @@ const projectsSchema = mongoose.Schema({
 
 })
 
-const Project = mongoose.model('Project', projectsSchema)
+const Board = mongoose.model('Board', boardsSchema)
 
-export default Project
+export default Board

@@ -5,6 +5,7 @@ import "express-async-errors";
 import tasksRoutes from "./routes/tasks.mjs";
 import authRoutes from "./routes/users.mjs";
 import projectRoutes from "./routes/projects.mjs";
+import boardRoutes from "./routes/boards.mjs";
 import connectMongoose from './db/mongoose.mjs';
 
 const PORT = process.env.PORT || 5050;
@@ -20,6 +21,7 @@ await connectMongoose();
 app.use("/tasks", tasksRoutes);
 app.use("/auth", authRoutes);
 app.use("/projects", projectRoutes);
+app.use("/boards", boardRoutes);
 
 // Global error handling
 app.use((err, _req, res, next) => {
@@ -32,7 +34,7 @@ app.use((err, _req, res, next) => {
     })
     return res.status(400).send({error: errors || "Invalid request"})
   } 
-  res.status(500).send({error: "Uh oh! An unexpected error occuredd.",data: err})
+  return res.status(500).send({error: "Uh oh! An unexpected error occuredd.",data: err})
 })
 
 // start the Express server
