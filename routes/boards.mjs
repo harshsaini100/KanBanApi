@@ -1,5 +1,6 @@
 import express from "express";
 import Board from "../models/Boards.mjs";
+import Project from "../models/Projects.mjs";
 import authMiddleware from "../middleware/authMiddleware.mjs";
 import { ObjectId } from "mongodb";
 
@@ -125,6 +126,19 @@ router.patch("/update_board/:id", authMiddleware, async (req, res) => {
       { $set: { name, description } },
       { new: true }
     );
+    res.status(200).send(board);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
+router.get("/get_board/:id", authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const board = await Board.findOne({ _id: id });
+    const projId = board.project;
+    const proj = await Project.findOne({ _id: ObjectId(projId) });
+    board.project_name = proj.name;
     res.status(200).send(board);
   } catch (err) {
     res.status(500).send({ error: err.message });
