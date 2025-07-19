@@ -134,12 +134,16 @@ router.patch("/update_board/:id", authMiddleware, async (req, res) => {
 
 router.get("/get_board/:id", authMiddleware, async (req, res) => {
   try {
+    console.log("herejjj")
     const { id } = req.params;
     const board = await Board.findOne({ _id: id });
     const projId = board.project;
     const proj = await Project.findOne({ _id: ObjectId(projId) });
-    board.project_name = proj.name;
-    res.status(200).send(board);
+    console.log(proj.name)
+    const boardObj = board.toObject();
+    const projObj = proj.toObject();
+    boardObj.project_name = projObj.name || "";
+    res.status(200).send(boardObj);
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
