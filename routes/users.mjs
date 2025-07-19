@@ -40,4 +40,8 @@ router.post('/login', async (req, res) =>{
     }
 })
 
+router.get('/wakeup', async (req, res) => {
+    res.status(200).send({ message: "Server is up and running!" });
+});
+
 export default router;
